@@ -1,8 +1,6 @@
-var startTime = 1642435200000
-var endTime = 1642607999999
-var token = '90dbfdbd-6d2e-4f58-9ef9-a1922e03a325'
-
-// const payAmount = [3000,10000]
+var startTime = 1642608000000
+var endTime = Date.parse(new Date())
+var token = 'ff0bf1e3-d004-4846-9b58-6044c8577942'
 
 
 function checkPaid() {
@@ -37,14 +35,16 @@ async function main () {
       return
     }
 
-    const accountArr = []
+    var accountObj = {}
     res.data.rows.forEach(item => {
-      if (item.payAmount === 3000) {
-        accountArr.push(item.payeeAccountNo)
+      if (!accountObj[item.payAmount]) {
+        accountObj[item.payAmount] = []
       }
+      accountObj[item.payAmount].push(item.payeeAccountNo)
     })
-    console.log(`共${accountArr.length}条`);
-    console.log(`payAmount为3000:`,accountArr);
+    for (const [key,value] of Object.entries(accountObj)) {
+      console.log(`payAmount为${key}:`,value);
+    }
   } else {
     console.log('读取失败！');
     alert('读取失败！');

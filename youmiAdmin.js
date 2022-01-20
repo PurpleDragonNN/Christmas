@@ -1,7 +1,18 @@
-var accounts = ["08333333333", "08000000000", "05000000000", "08777777777"]
-var itemTitle = '133'
-var start_date = 1642093200
-var end_date = 1642438799
+var accounts = []
+var start_date = 0
+var end_date = 0
+var itemTitle = ''
+if(!itemTitle || !accounts.length || !start_date|| !end_date){
+  alert('脚本必填项未填！')
+}
+/*
+  3000:133,
+  10000:69,
+  5000:125,
+  7000:124,
+  8000:123,
+  6000:122,
+ */
 
 // reject函数
 function reject (id){
