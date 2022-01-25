@@ -1,6 +1,6 @@
-var startTime = 1642608000000
+var startTime = 1643040000000
 var endTime = Date.parse(new Date())
-var token = 'ff0bf1e3-d004-4846-9b58-6044c8577942'
+var token = '4525dfd3-a739-42bb-af65-49aec1448fc3'
 
 
 function checkPaid() {
@@ -14,7 +14,7 @@ function checkPaid() {
     body: JSON.stringify({
       'pageNum': 1,
       'pageSize': 1000,
-      'orderId': '',
+      'batchNo': '',
       'detailStatus': 2, //付款状态
       'startTime': startTime,
       'endTime': endTime,
@@ -35,15 +35,30 @@ async function main () {
       return
     }
 
-    var accountObj = {}
+    var batchNoObj = {}
     res.data.rows.forEach(item => {
+      if (!batchNoObj[item.batchNo]) {
+        batchNoObj[item.batchNo] = {}
+      }
+      var accountObj =  batchNoObj[item.batchNo]
       if (!accountObj[item.payAmount]) {
         accountObj[item.payAmount] = []
       }
       accountObj[item.payAmount].push(item.payeeAccountNo)
     })
-    for (const [key,value] of Object.entries(accountObj)) {
-      console.log(`payAmount为${key}:`,value);
+    var lastKey = ''
+    for (const [key,value] of Object.entries(batchNoObj)) {
+      if (lastKey !== key) {
+        console.log('')
+        console.log(`***************付款批次号为${key}***************`);
+        lastKey = key
+      }
+      for (const [sonKey,sonValue] of Object.entries(value)) {
+        console.log(`payAmount为${sonKey}:`,sonValue);
+      }
+
+      // console.log('请复制以下内容：'+JSON.stringify(value));
+
     }
   } else {
     console.log('读取失败！');
